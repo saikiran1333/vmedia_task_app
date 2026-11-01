@@ -7,7 +7,7 @@ class ApiEndpoints {
   /// The Android emulator default reaches the host machine. Hello keeps [baseUrl].
   static const String catalogBaseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'http://10.0.2.2:5000',
+    defaultValue: 'http://192.168.0.11:5000',
   );
 
   static const String dummyPost = '/posts/1';

@@ -105,6 +105,7 @@ class _EnquiryFormScreenState extends ConsumerState<EnquiryFormScreen> {
               _field(_city, 'City', error: form.errors['city']),
               _field(_company, 'Company name (optional)', error: form.errors['companyName']),
               DropdownButtonFormField<String>(
+                isExpanded: true,
                 initialValue: _occasion.isEmpty ? null : _occasion,
                 decoration: InputDecoration(labelText: 'Occasion', errorText: form.errors['occasion']),
                 items: [for (final label in labels) DropdownMenuItem(value: label, child: Text(label, overflow: TextOverflow.ellipsis))],
@@ -112,6 +113,7 @@ class _EnquiryFormScreenState extends ConsumerState<EnquiryFormScreen> {
               ),
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
+                isExpanded: true,
                 initialValue: _budget.isEmpty ? null : _budget,
                 decoration: InputDecoration(labelText: 'Budget', errorText: form.errors['budget']),
                 items: [for (final label in enquiryBudgets) DropdownMenuItem(value: label, child: Text(label, overflow: TextOverflow.ellipsis))],
