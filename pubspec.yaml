@@ -24,3 +24,12 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/logo/
+    - assets/images/banners/
+    - assets/images/products/
+    - assets/images/categories/
+    - assets/images/process/
+    - assets/images/icons/
+    - assets/images/clients/
+    - assets/images/press/
