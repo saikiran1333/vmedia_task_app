@@ -136,7 +136,7 @@ int gridColumns(double width) {
 
 Future<void> openWhatsApp({required String name, required String id, String? price}) async {
   final message = 'Hello TribeGreen, I would like a quote for $name ($id)${price == null ? '' : '. Guide price $price'}.';
-  final uri = Uri.https('wa.me', '/919063099063', {'text': message});
+  final uri = Uri.https('wa.me', '/919121626812', {'text': message});
   final opened = await canLaunchUrl(uri) && await launchUrl(uri, mode: LaunchMode.externalApplication);
   if (!opened) {
     throw const WhatsAppUnavailable();
