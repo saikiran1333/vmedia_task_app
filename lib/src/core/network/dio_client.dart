@@ -5,13 +5,17 @@ import 'app_interceptor.dart';
 class DioClient {
   final Dio _dio;
 
-  DioClient()
+  DioClient({String? baseUrl})
       : _dio = Dio(
           BaseOptions(
-            baseUrl: ApiEndpoints.baseUrl,
+            baseUrl: baseUrl ?? ApiEndpoints.baseUrl,
             connectTimeout: const Duration(seconds: 10),
             receiveTimeout: const Duration(seconds: 10),
-            headers: {'Content-Type': 'application/json'},
+            sendTimeout: const Duration(seconds: 10),
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
           ),
         ) {
     _dio.interceptors.add(AppInterceptor());

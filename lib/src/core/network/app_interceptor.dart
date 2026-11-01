@@ -6,8 +6,10 @@ class AppInterceptor extends Interceptor {
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     if (kDebugMode) {
       debugPrint('➡️ [REQUEST] ${options.method} ${options.uri}');
-      debugPrint('Headers: ${options.headers}');
-      if (options.data != null) debugPrint('Data: ${options.data}');
+      debugPrint('Headers: ${_redact(options.headers)}');
+      final path = options.uri.path;
+      final sensitive = path.contains('/enquiries') || path.contains('/auth');
+      if (options.data != null && !sensitive) debugPrint('Data: ${_redact(options.data)}');
     }
     super.onRequest(options, handler);
   }
@@ -27,4 +29,15 @@ class AppInterceptor extends Interceptor {
     }
     super.onError(err, handler);
   }
+}
+
+Object? _redact(Object? value) {
+  if (value is Map) {
+    return value.map((key, item) {
+      final name = key.toString().toLowerCase();
+      final hidden = name.contains('password') || name.contains('token') || name.contains('authorization');
+      return MapEntry(key, hidden ? '[redacted]' : _redact(item));
+    });
+  }
+  return value;
 }

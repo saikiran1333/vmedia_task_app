@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vmedia/src/app/app.dart';
+import 'package:vmedia/src/app/app_router.dart';
 import 'package:vmedia/src/features/hello_world/domain/entities/hello_entity.dart';
 import 'package:vmedia/src/features/hello_world/domain/repositories/hello_repository.dart';
 import 'package:vmedia/src/features/hello_world/presentation/viewmodels/hello_viewmodel.dart';
@@ -22,6 +23,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
+          initialLocationProvider.overrideWithValue('/system'),
           helloRepositoryProvider.overrideWithValue(MockHelloRepository()),
         ],
         child: const VmediaApp(),
@@ -40,6 +42,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
+          initialLocationProvider.overrideWithValue('/system'),
           helloRepositoryProvider.overrideWithValue(_ThrowingOrEmptyRepository.empty()),
         ],
         child: const VmediaApp(),
@@ -57,6 +60,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
+          initialLocationProvider.overrideWithValue('/system'),
           helloRepositoryProvider.overrideWithValue(_ThrowingOrEmptyRepository.failing()),
         ],
         child: const VmediaApp(),
