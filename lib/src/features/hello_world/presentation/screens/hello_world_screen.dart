@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../../../../common_widgets/shimmer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -76,8 +78,15 @@ class _HelloWorldScreenState extends ConsumerState<HelloWorldScreen> {
     switch (state.status) {
       case HelloStatus.initial:
       case HelloStatus.loading:
-        return const Center(
-          child: CircularProgressIndicator(),
+        return const Shimmer(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ShimmerBlock(height: 18, width: 160),
+              SizedBox(height: 12),
+              ShimmerBlock(height: 140),
+            ],
+          ),
         );
       case HelloStatus.success:
         if (state.helloData == null) {

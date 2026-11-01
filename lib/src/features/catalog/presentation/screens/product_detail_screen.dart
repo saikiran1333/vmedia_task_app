@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../common_widgets/shimmer.dart';
 import '../../../enquiry/domain/enquiry_rules.dart';
 import '../../../enquiry/presentation/viewmodels/enquiry_viewmodels.dart' hide LoadStatus;
 import '../../../../theme/catalogue_theme.dart';
@@ -33,7 +34,24 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       child: CatalogueScaffold(
         title: 'Product',
         body: switch (detail.status) {
-          LoadStatus.loading || LoadStatus.idle => const Center(child: CircularProgressIndicator()),
+          LoadStatus.loading || LoadStatus.idle => Shimmer(
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
+                children: const [
+                  ShimmerBlock(height: 280, radius: 16),
+                  SizedBox(height: 16),
+                  ShimmerBlock(height: 28, width: 220),
+                  SizedBox(height: 8),
+                  ShimmerBlock(height: 20, width: 140),
+                  SizedBox(height: 16),
+                  ShimmerBlock(height: 14),
+                  SizedBox(height: 8),
+                  ShimmerBlock(height: 14, width: 260),
+                  SizedBox(height: 8),
+                  ShimmerBlock(height: 14, width: 180),
+                ],
+              ),
+            ),
           LoadStatus.error => StatusPanel(
               title: 'Product unavailable',
               body: detail.error ?? 'This product is not available.',

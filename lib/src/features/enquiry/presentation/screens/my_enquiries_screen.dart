@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../common_widgets/shimmer.dart';
 import '../../../../theme/catalogue_theme.dart';
 import '../../../catalog/presentation/screens/catalogue_shell.dart';
 import '../../../catalog/presentation/ui/catalog_widgets.dart';
@@ -28,7 +29,18 @@ class _MyEnquiriesScreenState extends ConsumerState<MyEnquiriesScreen> {
     return CatalogueScaffold(
       title: 'My enquiries',
       body: switch (history.status) {
-        LoadStatus.loading || LoadStatus.idle => const Center(child: CircularProgressIndicator()),
+        LoadStatus.loading || LoadStatus.idle => Shimmer(
+            child: ListView(
+              padding: const EdgeInsets.all(16),
+              children: const [
+                ShimmerBlock(height: 120, radius: 16),
+                SizedBox(height: 12),
+                ShimmerBlock(height: 120, radius: 16),
+                SizedBox(height: 12),
+                ShimmerBlock(height: 120, radius: 16),
+              ],
+            ),
+          ),
         LoadStatus.error => StatusPanel(
             title: 'History unavailable',
             body: history.error ?? 'Saved enquiries on this phone could not be read.',

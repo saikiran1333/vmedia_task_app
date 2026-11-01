@@ -84,7 +84,7 @@ class _EnquiryFormScreenState extends ConsumerState<EnquiryFormScreen> {
     return CatalogueScaffold(
       title: 'Enquiry',
       body: occasions.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const _EnquiryFormShimmer(),
         error: (error, _) => StatusPanel(title: 'Form unavailable', body: 'Occasions could not be loaded.', actionLabel: 'Retry', onAction: () => ref.invalidate(occasionsProvider)),
         data: (occasionRows) {
           final labels = occasionRows.map((item) => item.enquiryLabel).where((label) => label.isNotEmpty).toList();
@@ -194,6 +194,67 @@ List<String> _allowedOptions(List<String> offered, List<SelectedGift> gifts) {
     allowed = allowed.intersection(gift.customisationOptions.toSet());
   }
   return allowed.toList();
+}
+
+class _EnquiryFormShimmer extends StatefulWidget {
+  const _EnquiryFormShimmer();
+
+  @override
+  State<_EnquiryFormShimmer> createState() => _EnquiryFormShimmerState();
+}
+
+class _EnquiryFormShimmerState extends State<_EnquiryFormShimmer> with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 1200))..repeat();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, _) {
+        return ListView(
+          padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
+          children: [
+            _block(height: 14, widthFactor: 0.86),
+            const SizedBox(height: 8),
+            _block(height: 14, widthFactor: 0.55),
+            const SizedBox(height: 16),
+            for (var index = 0; index < 8; index++) ...[
+              _block(height: 56),
+              const SizedBox(height: 12),
+            ],
+            _block(height: 48),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _block({required double height, double widthFactor = 1}) {
+    final slide = _controller.value * 2 - 1;
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: FractionallySizedBox(
+        widthFactor: widthFactor,
+        child: Container(
+          height: height,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            gradient: LinearGradient(
+              begin: Alignment(slide - 1, 0),
+              end: Alignment(slide + 1, 0),
+              colors: const [CatalogueTheme.border, CatalogueTheme.white, CatalogueTheme.border],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _GiftRow extends ConsumerWidget {

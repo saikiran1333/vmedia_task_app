@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../common_widgets/shimmer.dart';
 import '../../../../theme/catalogue_theme.dart';
 import '../../domain/entities/product_entity.dart';
 import '../ui/catalog_widgets.dart';
@@ -76,7 +77,18 @@ class _CatalogueScreenState extends ConsumerState<CatalogueScreen> {
 
   Widget _body(CatalogListState list) {
     if (list.status == LoadStatus.loading || list.status == LoadStatus.idle) {
-      return const Center(child: CircularProgressIndicator());
+      return Shimmer(
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: const [
+            ShimmerBlock(height: 220),
+            SizedBox(height: 12),
+            ShimmerBlock(height: 220),
+            SizedBox(height: 12),
+            ShimmerBlock(height: 220),
+          ],
+        ),
+      );
     }
     if (list.status == LoadStatus.error && list.items.isEmpty) {
       return StatusPanel(title: 'Catalogue unavailable', body: list.error ?? 'Try again.', actionLabel: 'Retry', onAction: () => ref.read(catalogListViewModelProvider.notifier).load());
@@ -100,7 +112,7 @@ class _CatalogueScreenState extends ConsumerState<CatalogueScreen> {
                 if (list.hasMore)
                   OutlinedButton(
                     onPressed: list.loadingMore ? null : () => ref.read(catalogListViewModelProvider.notifier).loadMore(),
-                    child: Text(list.loadingMore ? 'Loading…' : 'Load more'),
+                    child: list.loadingMore ? const Shimmer(child: ShimmerBlock(height: 16, width: 96)) : const Text('Load more'),
                   ),
               ],
             ),
@@ -126,7 +138,7 @@ class _CatalogueScreenState extends ConsumerState<CatalogueScreen> {
                     padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
                     child: OutlinedButton(
                       onPressed: list.loadingMore ? null : () => ref.read(catalogListViewModelProvider.notifier).loadMore(),
-                      child: Text(list.loadingMore ? 'Loading…' : 'Load more'),
+                      child: list.loadingMore ? const Shimmer(child: ShimmerBlock(height: 16, width: 96)) : const Text('Load more'),
                     ),
                   ),
                 ),

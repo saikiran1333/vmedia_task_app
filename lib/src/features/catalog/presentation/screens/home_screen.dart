@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../common_widgets/shimmer.dart';
 import '../../../../theme/catalogue_theme.dart';
 import '../../domain/entities/product_entity.dart';
 import '../ui/catalog_widgets.dart';
@@ -61,7 +62,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             const SizedBox(height: 20),
             const _Hero(),
             const SizedBox(height: 28),
-            if (home.status == LoadStatus.loading) const Padding(padding: EdgeInsets.all(24), child: Center(child: CircularProgressIndicator())),
+            if (home.status == LoadStatus.loading) const _HomeShimmer(),
             if (home.status == LoadStatus.error)
               StatusPanel(title: 'Catalogue unavailable', body: home.error ?? 'Try again.', actionLabel: 'Retry', onAction: () => ref.read(homeViewModelProvider.notifier).load()),
             if (home.status == LoadStatus.ready) ...[
@@ -96,6 +97,32 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ElevatedButton(onPressed: () => context.go('/enquire'), child: const Text('Start an enquiry')),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _HomeShimmer extends StatelessWidget {
+  const _HomeShimmer();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Shimmer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ShimmerBlock(height: 18, width: 140),
+          SizedBox(height: 12),
+          SizedBox(height: 116, child: ShimmerBlock(height: 116)),
+          SizedBox(height: 28),
+          ShimmerBlock(height: 18, width: 120),
+          SizedBox(height: 12),
+          ShimmerBlock(height: 180),
+          SizedBox(height: 28),
+          ShimmerBlock(height: 18, width: 140),
+          SizedBox(height: 12),
+          ShimmerBlock(height: 180),
+        ],
       ),
     );
   }
